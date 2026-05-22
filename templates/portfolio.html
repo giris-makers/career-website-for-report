@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+{% block title %}Vector Transformer – Research Portfolio{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
+
+<!-- Hero -->
+<section class="pf-hero">
+    <div class="pf-hero-bg">
+        <canvas id="dotCanvas"></canvas>
+    </div>
+    <div class="container pf-hero-content">
+        <div class="pf-tag">Research Portfolio</div>
+        <h1 class="pf-hero-title">Vector Transformer</h1>
+        <p class="pf-hero-sub">A deep dive into attention-based architectures that changed how machines understand language, vision, and sequence data.</p>
+        <div class="pf-hero-chips">
+            <span class="chip">Deep Learning</span>
+            <span class="chip">NLP</span>
+            <span class="chip">Attention Mechanism</span>
+            <span class="chip">PyTorch</span>
+            <span class="chip">Self-Attention</span>
+        </div>
+        <a href="#overview" class="pf-scroll-cta">Explore ↓</a>
+    </div>
+</section>
+
+<!-- Overview -->
+<section class="pf-section" id="overview">
+    <div class="container">
+        <div class="pf-section-label">01 — Overview</div>
+        <h2 class="pf-section-title">What is a Vector Transformer?</h2>
+        <div class="pf-two-col">
+            <div>
+                <p>The <strong>Transformer</strong> is a neural network architecture introduced in the landmark 2017 paper <em>"Attention Is All You Need"</em> by Vaswani et al. at Google Brain. Unlike recurrent networks (RNNs/LSTMs), Transformers process sequences entirely through <strong>attention mechanisms</strong> — dispensing with recurrence entirely.</p>
+                <p style="margin-top:14px">At its core, every token in a sequence is represented as a <strong>vector</strong> in a high-dimensional embedding space. The model learns to relate these vectors to each other through self-attention, allowing it to capture dependencies regardless of how far apart tokens are in the sequence.</p>
+            </div>
+            <div>
+                <div class="pf-stat-grid">
+                    <div class="pf-stat"><span class="pf-stat-num">2017</span><span class="pf-stat-lbl">Year introduced</span></div>
+                    <div class="pf-stat"><span class="pf-stat-num">512+</span><span class="pf-stat-lbl">Embedding dimensions</span></div>
+                    <div class="pf-stat"><span class="pf-stat-num">O(n²)</span><span class="pf-stat-lbl">Attention complexity</span></div>
+                    <div class="pf-stat"><span class="pf-stat-num">175B</span><span class="pf-stat-lbl">GPT-3 parameters</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture Diagram -->
+<section class="pf-section pf-section-dark" id="architecture">
+    <div class="container">
+        <div class="pf-section-label pf-label-light">02 — Architecture</div>
+        <h2 class="pf-section-title pf-title-light">The Transformer Architecture</h2>
+        <p class="pf-section-desc pf-desc-light">The full encoder-decoder stack, showing how vectors flow through each layer.</p>
+
+        <div class="pf-arch-diagram">
+            <!-- Encoder -->
+            <div class="arch-col">
+                <div class="arch-col-label">Encoder</div>
+                <div class="arch-block arch-input">
+                    <span>Input Tokens</span>
+                    <div class="arch-sublabel">["The", "cat", "sat"]</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-embed">
+                    <span>Token Embeddings</span>
+                    <div class="arch-sublabel">d_model = 512</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-pos">
+                    <span>Positional Encoding</span>
+                    <div class="arch-sublabel">sin/cos functions</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-attn">
+                    <span>Multi-Head Attention</span>
+                    <div class="arch-sublabel">h = 8 heads</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-norm">
+                    <span>Add &amp; Norm</span>
+                    <div class="arch-sublabel">Layer Normalization</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-ff">
+                    <span>Feed-Forward Network</span>
+                    <div class="arch-sublabel">d_ff = 2048</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-norm">
+                    <span>Add &amp; Norm</span>
+                    <div class="arch-sublabel">× N layers</div>
+                </div>
+            </div>
+
+            <!-- Arrow between -->
+            <div class="arch-bridge">
+                <div class="arch-bridge-line"></div>
+                <div class="arch-bridge-label">Context vectors passed to decoder</div>
+                <div class="arch-bridge-arrow">→</div>
+            </div>
+
+            <!-- Decoder -->
+            <div class="arch-col">
+                <div class="arch-col-label">Decoder</div>
+                <div class="arch-block arch-input">
+                    <span>Output Tokens (shifted)</span>
+                    <div class="arch-sublabel">Auto-regressive</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-embed">
+                    <span>Token Embeddings</span>
+                    <div class="arch-sublabel">d_model = 512</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-pos">
+                    <span>Positional Encoding</span>
+                    <div class="arch-sublabel">sin/cos functions</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-masked">
+                    <span>Masked Multi-Head Attention</span>
+                    <div class="arch-sublabel">Causal mask applied</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-attn">
+                    <span>Cross-Attention</span>
+                    <div class="arch-sublabel">K, V from encoder</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-ff">
+                    <span>Feed-Forward Network</span>
+                    <div class="arch-sublabel">d_ff = 2048</div>
+                </div>
+                <div class="arch-arrow">↓</div>
+                <div class="arch-block arch-out">
+                    <span>Linear + Softmax</span>
+                    <div class="arch-sublabel">Vocab probabilities</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Concepts -->
+<section class="pf-section" id="concepts">
+    <div class="container">
+        <div class="pf-section-label">03 — Core Concepts</div>
+        <h2 class="pf-section-title">Key Building Blocks</h2>
+        <div class="pf-concepts-grid">
+
+            <div class="concept-card concept-blue">
+                <div class="concept-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                </div>
+                <h3>Self-Attention</h3>
+                <p>Each token attends to all other tokens in the sequence, computing a weighted sum of value vectors. This allows the model to dynamically focus on the most relevant context.</p>
+                <div class="concept-formula">
+                    Attention(Q, K, V) = softmax(QK<sup>T</sup> / √d<sub>k</sub>) · V
+                </div>
+            </div>
+
+            <div class="concept-card concept-purple">
+                <div class="concept-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                </div>
+                <h3>Multi-Head Attention</h3>
+                <p>Rather than a single attention function, the model runs h parallel attention heads, each projecting to a different subspace. Outputs are concatenated and projected.</p>
+                <div class="concept-formula">
+                    MultiHead(Q,K,V) = Concat(head<sub>1</sub>..head<sub>h</sub>) W<sup>O</sup>
+                </div>
+            </div>
+
+            <div class="concept-card concept-teal">
+                <div class="concept-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </div>
+                <h3>Positional Encoding</h3>
+                <p>Since Transformers have no notion of order, position information is injected as sinusoidal vectors added to the token embeddings before the first layer.</p>
+                <div class="concept-formula">
+                    PE(pos,2i) = sin(pos / 10000<sup>2i/d</sup>)
+                </div>
+            </div>
+
+            <div class="concept-card concept-orange">
+                <div class="concept-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><line x1="12" y1="8" x2="12" y2="16"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="16" x2="5" y2="19"/><line x1="12" y1="16" x2="19" y2="19"/></svg>
+                </div>
+                <h3>Feed-Forward Layers</h3>
+                <p>After each attention block, a two-layer fully-connected network is applied independently to each position, introducing nonlinearity and expanding representational capacity.</p>
+                <div class="concept-formula">
+                    FFN(x) = max(0, xW<sub>1</sub> + b<sub>1</sub>)W<sub>2</sub> + b<sub>2</sub>
+                </div>
+            </div>
+
+            <div class="concept-card concept-green">
+                <div class="concept-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Layer Normalization</h3>
+                <p>Applied after each sub-layer (attention and FFN), LayerNorm stabilizes training by normalizing across the feature dimension, combined with residual connections.</p>
+                <div class="concept-formula">
+                    LayerNorm(x + Sublayer(x))
+                </div>
+            </div>
+
+            <div class="concept-card concept-red">
+                <div class="concept-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                </div>
+                <h3>Token Embeddings</h3>
+                <p>Words are mapped to dense vectors in R^d space. These embeddings are learned jointly with the model and shared with the output projection layer to reduce parameters.</p>
+                <div class="concept-formula">
+                    x = Embedding(token) · √d<sub>model</sub>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Attention Visualization -->
+<section class="pf-section pf-section-gray" id="attention">
+    <div class="container">
+        <div class="pf-section-label">04 — Visualization</div>
+        <h2 class="pf-section-title">Self-Attention in Action</h2>
+        <p class="pf-section-desc">Hover over a word to see which tokens it attends to most strongly.</p>
+
+        <div class="attn-demo">
+            <div class="attn-sentence" id="attnSentence">
+                <span class="attn-word" data-index="0">The</span>
+                <span class="attn-word" data-index="1">animal</span>
+                <span class="attn-word" data-index="2">didn't</span>
+                <span class="attn-word" data-index="3">cross</span>
+                <span class="attn-word" data-index="4">the</span>
+                <span class="attn-word" data-index="5">street</span>
+                <span class="attn-word" data-index="6">because</span>
+                <span class="attn-word" data-index="7">it</span>
+                <span class="attn-word" data-index="8">was</span>
+                <span class="attn-word" data-index="9">too</span>
+                <span class="attn-word" data-index="10">tired</span>
+            </div>
+            <p class="attn-hint">← Hover a word to see attention weights</p>
+        </div>
+    </div>
+</section>
+
+<!-- Applications -->
+<section class="pf-section" id="applications">
+    <div class="container">
+        <div class="pf-section-label">05 — Applications</div>
+        <h2 class="pf-section-title">Where Transformers Shine</h2>
+        <div class="pf-apps-grid">
+            <div class="app-card">
+                <div class="app-icon app-icon-blue">🗣️</div>
+                <h3>Language Models</h3>
+                <p>GPT, BERT, T5, and LLaMA — powering chat, summarization, translation, and code generation at scale.</p>
+                <div class="app-examples">GPT-4 · Claude · Gemini</div>
+            </div>
+            <div class="app-card">
+                <div class="app-icon app-icon-purple">👁️</div>
+                <h3>Computer Vision</h3>
+                <p>Vision Transformers (ViT) treat image patches as tokens, achieving state-of-the-art on image classification and detection.</p>
+                <div class="app-examples">ViT · DINO · SAM</div>
+            </div>
+            <div class="app-card">
+                <div class="app-icon app-icon-green">🧬</div>
+                <h3>Protein Folding</h3>
+                <p>AlphaFold2 uses Transformer-based attention over amino acid sequences to predict 3D protein structures with atomic accuracy.</p>
+                <div class="app-examples">AlphaFold2 · ESMFold</div>
+            </div>
+            <div class="app-card">
+                <div class="app-icon app-icon-orange">🎵</div>
+                <h3>Audio & Music</h3>
+                <p>Whisper, MusicGen, and AudioLM apply Transformers to speech recognition, transcription, and generative audio synthesis.</p>
+                <div class="app-examples">Whisper · MusicGen</div>
+            </div>
+            <div class="app-card">
+                <div class="app-icon app-icon-teal">💊</div>
+                <h3>Drug Discovery</h3>
+                <p>Molecular Transformers model chemical structures as sequences, accelerating virtual screening and drug candidate generation.</p>
+                <div class="app-examples">MolBERT · ChemGPT</div>
+            </div>
+            <div class="app-card">
+                <div class="app-icon app-icon-red">🤖</div>
+                <h3>Robotics & RL</h3>
+                <p>Decision Transformer frames reinforcement learning as sequence modeling, enabling offline RL with transformer backbones.</p>
+                <div class="app-examples">Decision Transformer · RT-2</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Papers / Timeline -->
+<section class="pf-section pf-section-dark" id="timeline">
+    <div class="container">
+        <div class="pf-section-label pf-label-light">06 — History</div>
+        <h2 class="pf-section-title pf-title-light">Milestone Papers</h2>
+        <div class="pf-timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2017</div>
+                <div class="timeline-content">
+                    <h3>"Attention Is All You Need"</h3>
+                    <p>Vaswani et al. at Google Brain introduce the original Transformer encoder-decoder, achieving state-of-the-art on machine translation.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2018</div>
+                <div class="timeline-content">
+                    <h3>BERT</h3>
+                    <p>Devlin et al. at Google introduce bidirectional pre-training, revolutionizing NLP fine-tuning with masked language modeling.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2019</div>
+                <div class="timeline-content">
+                    <h3>GPT-2</h3>
+                    <p>OpenAI demonstrate that scaling language models leads to zero-shot generalization across diverse NLP benchmarks.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-content">
+                    <h3>GPT-3 & T5</h3>
+                    <p>175B parameter GPT-3 shows emergent few-shot abilities. Google's T5 unifies all NLP tasks as text-to-text generation.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2021</div>
+                <div class="timeline-content">
+                    <h3>Vision Transformer (ViT)</h3>
+                    <p>Dosovitskiy et al. apply the pure Transformer to images with minimal modifications, matching CNNs with enough data.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2022–Now</div>
+                <div class="timeline-content">
+                    <h3>ChatGPT, LLaMA, Gemini</h3>
+                    <p>Instruction-tuned and RLHF-trained models bring Transformer intelligence to mainstream use. The era of foundation models begins.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Code Snippet -->
+<section class="pf-section" id="code">
+    <div class="container">
+        <div class="pf-section-label">07 — Implementation</div>
+        <h2 class="pf-section-title">Scaled Dot-Product Attention in PyTorch</h2>
+        <p class="pf-section-desc">The core of every Transformer — in under 15 lines.</p>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-lang">Python · PyTorch</span>
+                <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre class="code-content"><code><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn.functional <span class="kw">as</span> F
+<span class="kw">import</span> math
+
+<span class="kw">def</span> <span class="fn">scaled_dot_product_attention</span>(query, key, value, mask<span class="op">=</span><span class="kv">None</span>):
+    <span class="str">"""
+    Compute attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) * V
+    query, key, value: (batch, heads, seq_len, d_k)
+    """</span>
+    d_k <span class="op">=</span> query.size(<span class="op">-</span><span class="num">1</span>)
+
+    <span class="cm"># Dot product of queries and keys, scaled by sqrt(d_k)</span>
+    scores <span class="op">=</span> torch.matmul(query, key.transpose(<span class="op">-</span><span class="num">2</span>, <span class="op">-</span><span class="num">1</span>)) <span class="op">/</span> math.sqrt(d_k)
+
+    <span class="cm"># Apply optional mask (for causal / padding)</span>
+    <span class="kw">if</span> mask <span class="kw">is not</span> <span class="kv">None</span>:
+        scores <span class="op">=</span> scores.masked_fill(mask <span class="op">==</span> <span class="num">0</span>, <span class="op">-</span><span class="num">1e9</span>)
+
+    <span class="cm"># Softmax over the key dimension → attention weights</span>
+    weights <span class="op">=</span> F.softmax(scores, dim<span class="op">=-</span><span class="num">1</span>)
+
+    <span class="cm"># Weighted sum of values</span>
+    <span class="kw">return</span> torch.matmul(weights, value), weights</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="pf-cta-section">
+    <div class="container pf-cta-inner">
+        <h2>Interested in AI & ML roles?</h2>
+        <p>We're hiring engineers and researchers working on cutting-edge models.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">View Open Positions</a>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/portfolio.js') }}"></script>
+{% endblock %}
