@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}About Us – Nexus Careers{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>About Nexus</h1>
+        <p class="hero-sub">We're on a mission to connect people with opportunities that matter.</p>
+    </div>
+</section>
+
+<section class="about-section container">
+    <div class="about-grid">
+        <div class="about-block">
+            <h2>Our Mission</h2>
+            <p>At Nexus, we believe the right career opportunity can change everything. We build tools that help people find meaningful work and help companies find outstanding talent. Every day, we work to make that connection faster, fairer, and more human.</p>
+        </div>
+
+        <div class="about-block">
+            <h2>Our Culture</h2>
+            <p>We are a team of curious, driven people who care deeply about our work and each other. We move fast, but never sacrifice quality. We disagree openly and decide together. We celebrate wins and learn from setbacks. Above all, we treat everyone — teammates, customers, and candidates — with respect.</p>
+        </div>
+
+        <div class="about-block">
+            <h2>Benefits & Perks</h2>
+            <ul class="perks-list">
+                <li>Competitive salary and equity</li>
+                <li>Comprehensive health, dental, and vision coverage</li>
+                <li>Flexible remote and hybrid work options</li>
+                <li>Generous PTO and company-wide recharge days</li>
+                <li>$2,000 annual learning & development budget</li>
+                <li>Home office stipend</li>
+                <li>401(k) with company match</li>
+                <li>Parental leave for all caregivers</li>
+            </ul>
+        </div>
+
+        <div class="about-block">
+            <h2>Our Values</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <span class="value-icon">🚀</span>
+                    <h3>Move with purpose</h3>
+                    <p>Speed matters, but direction matters more.</p>
+                </div>
+                <div class="value-item">
+                    <span class="value-icon">🤝</span>
+                    <h3>Trust each other</h3>
+                    <p>We assume good intent and act with integrity.</p>
+                </div>
+                <div class="value-item">
+                    <span class="value-icon">💡</span>
+                    <h3>Stay curious</h3>
+                    <p>The best ideas come from asking why.</p>
+                </div>
+                <div class="value-item">
+                    <span class="value-icon">🌍</span>
+                    <h3>Build for everyone</h3>
+                    <p>Diverse teams build better products.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-cta">
+        <h2>Ready to find your next role?</h2>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">View Open Roles</a>
+    </div>
+</section>
+{% endblock %}

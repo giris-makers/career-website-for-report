@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ job.title }} – Nexus Careers{% endblock %}
+
+{% block content %}
+<div class="container detail-container">
+    <a href="{{ url_for('index') }}" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to all roles
+    </a>
+
+    <div class="detail-layout">
+        <div class="detail-main">
+            <div class="job-dept-badge">{{ job.department }}</div>
+            <h1 class="detail-title">{{ job.title }}</h1>
+
+            <div class="detail-meta">
+                <span class="meta-item">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    {{ job.location }}
+                </span>
+                <span class="meta-item">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    {{ job.type }}
+                </span>
+                {% if job.salary %}
+                <span class="meta-item">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    {{ job.salary }}
+                </span>
+                {% endif %}
+            </div>
+
+            <div class="detail-section">
+                <h2>About the Role</h2>
+                <p>{{ job.description }}</p>
+            </div>
+
+            <div class="detail-section">
+                <h2>Requirements</h2>
+                <ul class="requirements-list">
+                    {% for req in job.requirements.split('\n') %}
+                    {% if req.strip() %}
+                    <li>{{ req.strip() }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <aside class="detail-sidebar">
+            <div class="sidebar-card">
+                <h3>Ready to apply?</h3>
+                <p>We review every application carefully. You'll hear from us within 5–7 business days.</p>
+                <a href="{{ url_for('apply', job_id=job.id) }}" class="btn btn-primary btn-full">Apply Now</a>
+            </div>
+
+            <div class="sidebar-card sidebar-card-light">
+                <h3>Role Details</h3>
+                <ul class="sidebar-details">
+                    <li><span>Department</span><strong>{{ job.department }}</strong></li>
+                    <li><span>Location</span><strong>{{ job.location }}</strong></li>
+                    <li><span>Type</span><strong>{{ job.type }}</strong></li>
+                    {% if job.salary %}<li><span>Salary</span><strong>{{ job.salary }}</strong></li>{% endif %}
+                    <li><span>Posted</span><strong>{{ job.posted_date.strftime('%b %d, %Y') }}</strong></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

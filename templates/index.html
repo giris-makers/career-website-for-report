@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Open Roles – Nexus Careers{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Join Our Team</h1>
+        <p class="hero-sub">We're building something great. Come be part of it.</p>
+    </div>
+</section>
+
+<section class="jobs-section container">
+    <div class="filters-bar">
+        <form method="get" action="{{ url_for('index') }}" class="filters-form">
+            <select name="department" onchange="this.form.submit()">
+                <option value="">All Departments</option>
+                {% for dept in departments %}
+                <option value="{{ dept }}" {% if selected_department == dept %}selected{% endif %}>{{ dept }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="type" onchange="this.form.submit()">
+                <option value="">All Types</option>
+                <option value="Full-time" {% if selected_type == 'Full-time' %}selected{% endif %}>Full-time</option>
+                <option value="Part-time" {% if selected_type == 'Part-time' %}selected{% endif %}>Part-time</option>
+                <option value="Contract" {% if selected_type == 'Contract' %}selected{% endif %}>Contract</option>
+            </select>
+
+            <input type="text" name="location" placeholder="Filter by location..." value="{{ selected_location }}" />
+            <button type="submit" class="btn btn-primary">Filter</button>
+            {% if selected_department or selected_type or selected_location %}
+            <a href="{{ url_for('index') }}" class="btn btn-ghost">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="jobs-count">
+        <span>{{ jobs|length }} open position{{ 's' if jobs|length != 1 else '' }}</span>
+    </div>
+
+    {% if jobs %}
+    <div class="jobs-list">
+        {% for job in jobs %}
+        <a href="{{ url_for('job_detail', job_id=job.id) }}" class="job-card">
+            <div class="job-card-main">
+                <div class="job-dept-badge">{{ job.department }}</div>
+                <h2 class="job-title">{{ job.title }}</h2>
+                <div class="job-meta">
+                    <span class="meta-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        {{ job.location }}
+                    </span>
+                    <span class="meta-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        {{ job.type }}
+                    </span>
+                    {% if job.salary %}
+                    <span class="meta-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        {{ job.salary }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="job-card-arrow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No open positions match your filters.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">View all roles</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
