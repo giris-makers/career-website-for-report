@@ -1,0 +1,80 @@
+{% extends "base_learn.html" %}
+{% block title %}Courses – LearnHub{% endblock %}
+
+{% block content %}
+<section class="lh-page-hero">
+    <div class="lh-container">
+        <h1>All Courses</h1>
+        <p>Expand your skills with expert-led courses. Learn at your own pace, earn certificates.</p>
+    </div>
+</section>
+
+<section class="lh-section">
+    <div class="lh-container">
+        <!-- Filters -->
+        <form method="get" class="lh-filters-bar">
+            <div class="lh-search-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" name="q" placeholder="Search courses…" value="{{ search }}" />
+            </div>
+            <select name="category" onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                <option value="{{ cat.name }}" {% if selected_category == cat.name %}selected{% endif %}>{{ cat.icon }} {{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="level" onchange="this.form.submit()">
+                <option value="">All Levels</option>
+                <option value="Beginner"     {% if selected_level=='Beginner' %}selected{% endif %}>Beginner</option>
+                <option value="Intermediate" {% if selected_level=='Intermediate' %}selected{% endif %}>Intermediate</option>
+                <option value="Advanced"     {% if selected_level=='Advanced' %}selected{% endif %}>Advanced</option>
+            </select>
+            <button type="submit" class="lh-btn lh-btn-primary">Search</button>
+            {% if selected_category or selected_level or search %}
+            <a href="{{ url_for('services') }}" class="lh-btn lh-btn-ghost">Clear</a>
+            {% endif %}
+        </form>
+
+        <div class="lh-results-count">
+            {{ courses|length }} course{{ 's' if courses|length != 1 }} found
+        </div>
+
+        {% if courses %}
+        <div class="lh-courses-grid lh-courses-grid-wide">
+            {% for course in courses %}
+            <a href="{{ url_for('course_detail', slug=course.slug) }}" class="lh-course-card">
+                <div class="lh-course-thumb" style="background: linear-gradient(135deg, {{ course.color }}22 0%, {{ course.color }}44 100%); border-bottom: 3px solid {{ course.color }}">
+                    <span class="lh-course-icon">{{ course.icon }}</span>
+                    {% if course.featured %}
+                    <span class="lh-course-featured-badge">⭐ Featured</span>
+                    {% endif %}
+                    <span class="lh-course-level lh-level-{{ course.level.lower().replace(' ','-') }}">{{ course.level }}</span>
+                </div>
+                <div class="lh-course-body">
+                    <div class="lh-course-cat">{{ course.category_obj.name }}</div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description[:90] }}{% if course.description|length > 90 %}…{% endif %}</p>
+                    <div class="lh-course-meta">
+                        <span>⏱ {{ course.duration }}</span>
+                        <span>📚 {{ course.lessons }}</span>
+                        <span>⭐ {{ course.rating }}</span>
+                    </div>
+                    <div class="lh-course-footer">
+                        <span class="lh-course-instructor">{{ course.instructor }}</span>
+                        <span class="lh-course-price">${{ "%.0f"|format(course.price) }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="lh-empty-state">
+            <div class="lh-empty-icon">🔍</div>
+            <h3>No courses found</h3>
+            <p>Try adjusting your filters or search terms.</p>
+            <a href="{{ url_for('services') }}" class="lh-btn lh-btn-primary">Clear filters</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

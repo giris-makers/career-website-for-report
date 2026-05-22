@@ -1,0 +1,126 @@
+{% extends "base_learn.html" %}
+{% block title %}Dashboard – LearnHub{% endblock %}
+
+{% block content %}
+<section class="lh-section" style="padding-top:40px">
+    <div class="lh-container">
+
+        <!-- Welcome header -->
+        <div class="lh-dash-header">
+            <div class="lh-dash-welcome">
+                <div class="lh-dash-avatar" style="background:{{ current_user.avatar_color }}">
+                    {{ current_user.initials }}
+                </div>
+                <div>
+                    <h1>Welcome back, {{ current_user.name.split()[0] }}! 👋</h1>
+                    <p>Member since {{ current_user.created_at.strftime('%B %Y') }}</p>
+                </div>
+            </div>
+            <a href="{{ url_for('services') }}" class="lh-btn lh-btn-primary">Browse More Courses</a>
+        </div>
+
+        <!-- Stats row -->
+        <div class="lh-dash-stats">
+            <div class="lh-dash-stat">
+                <span class="lh-dash-stat-num">{{ enrollments|length }}</span>
+                <span class="lh-dash-stat-lbl">Enrolled Courses</span>
+            </div>
+            <div class="lh-dash-stat">
+                {% set completed = enrollments|selectattr('progress','equalto',100)|list|length %}
+                <span class="lh-dash-stat-num">{{ completed }}</span>
+                <span class="lh-dash-stat-lbl">Completed</span>
+            </div>
+            <div class="lh-dash-stat">
+                {% if enrollments %}
+                {% set avg = (enrollments|sum(attribute='progress') / enrollments|length)|round|int %}
+                {% else %}{% set avg = 0 %}{% endif %}
+                <span class="lh-dash-stat-num">{{ avg }}%</span>
+                <span class="lh-dash-stat-lbl">Avg Progress</span>
+            </div>
+            <div class="lh-dash-stat">
+                <span class="lh-dash-stat-num">{{ (enrollments|length * 2)|int }}h</span>
+                <span class="lh-dash-stat-lbl">Hours Learned</span>
+            </div>
+        </div>
+
+        <!-- My Courses -->
+        <div class="lh-dash-section">
+            <h2>My Courses</h2>
+            {% if enrollments %}
+            <div class="lh-enrolled-list">
+                {% for enroll in enrollments %}
+                <div class="lh-enrolled-card">
+                    <div class="lh-enrolled-icon" style="background:{{ enroll.course.color }}22; border:2px solid {{ enroll.course.color }}44">
+                        <span>{{ enroll.course.icon }}</span>
+                    </div>
+                    <div class="lh-enrolled-info">
+                        <a href="{{ url_for('course_detail', slug=enroll.course.slug) }}">
+                            <h3>{{ enroll.course.title }}</h3>
+                        </a>
+                        <div class="lh-enrolled-meta">
+                            <span>{{ enroll.course.category_obj.name }}</span>
+                            <span>·</span>
+                            <span>{{ enroll.course.level }}</span>
+                            <span>·</span>
+                            <span>Enrolled {{ enroll.enrolled_at.strftime('%b %d, %Y') }}</span>
+                        </div>
+                        <div class="lh-progress-row">
+                            <div class="lh-progress-bar-wrap">
+                                <div class="lh-progress-bar" style="width:{{ enroll.progress }}%; background:{{ enroll.course.color }}"></div>
+                            </div>
+                            <span class="lh-progress-pct">{{ enroll.progress }}%</span>
+                        </div>
+                    </div>
+                    <div class="lh-enrolled-actions">
+                        <form method="post" action="{{ url_for('update_progress', enrollment_id=enroll.id) }}" class="lh-progress-form">
+                            <select name="progress" onchange="this.form.submit()" class="lh-progress-select">
+                                {% for pct in [0,10,20,30,40,50,60,70,80,90,100] %}
+                                <option value="{{ pct }}" {% if enroll.progress==pct %}selected{% endif %}>{{ pct }}%</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                        <a href="{{ url_for('course_detail', slug=enroll.course.slug) }}" class="lh-btn lh-btn-primary lh-btn-sm">Continue →</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="lh-empty-state">
+                <div class="lh-empty-icon">📚</div>
+                <h3>No courses yet</h3>
+                <p>Enroll in your first course and start learning today.</p>
+                <a href="{{ url_for('services') }}" class="lh-btn lh-btn-primary">Browse Courses</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Recommended -->
+        <div class="lh-dash-section">
+            <h2>Recommended for You</h2>
+            <div class="lh-courses-grid">
+                {% for course in all_courses %}
+                {% set already_enrolled = enrollments|selectattr('course_id','equalto',course.id)|list|length > 0 %}
+                {% if not already_enrolled %}
+                <a href="{{ url_for('course_detail', slug=course.slug) }}" class="lh-course-card">
+                    <div class="lh-course-thumb" style="background: linear-gradient(135deg, {{ course.color }}22 0%, {{ course.color }}44 100%); border-bottom: 3px solid {{ course.color }}">
+                        <span class="lh-course-icon">{{ course.icon }}</span>
+                        <span class="lh-course-level lh-level-{{ course.level.lower().replace(' ','-') }}">{{ course.level }}</span>
+                    </div>
+                    <div class="lh-course-body">
+                        <div class="lh-course-cat">{{ course.category_obj.name }}</div>
+                        <h3>{{ course.title }}</h3>
+                        <p>{{ course.description[:80] }}…</p>
+                        <div class="lh-course-footer">
+                            <span class="lh-course-instructor">{{ course.instructor }}</span>
+                            <span class="lh-course-price">${{ "%.0f"|format(course.price) }}</span>
+                        </div>
+                    </div>
+                </a>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

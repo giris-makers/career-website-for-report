@@ -1,0 +1,95 @@
+{% extends "base_learn.html" %}
+{% block title %}Contact Us – LearnHub{% endblock %}
+
+{% block content %}
+<section class="lh-page-hero">
+    <div class="lh-container">
+        <h1>Get in Touch</h1>
+        <p>Have a question, feedback, or partnership inquiry? We'd love to hear from you.</p>
+    </div>
+</section>
+
+<section class="lh-section">
+    <div class="lh-container">
+        <div class="lh-contact-layout">
+            <!-- Form -->
+            <div class="lh-contact-form-wrap">
+                <h2>Send Us a Message</h2>
+                <p style="color:#64748b;margin-bottom:24px">We typically respond within 24 hours on business days.</p>
+                <form method="post" class="lh-contact-form">
+                    <div class="lh-form-row">
+                        <div class="lh-form-group">
+                            <label for="name">Full Name <span class="lh-req">*</span></label>
+                            <input type="text" id="name" name="name" required placeholder="Jane Smith" />
+                        </div>
+                        <div class="lh-form-group">
+                            <label for="email">Email Address <span class="lh-req">*</span></label>
+                            <input type="email" id="email" name="email" required placeholder="jane@example.com" />
+                        </div>
+                    </div>
+                    <div class="lh-form-group">
+                        <label for="subject">Subject <span class="lh-req">*</span></label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Choose a topic…</option>
+                            <option value="Course question">Course question</option>
+                            <option value="Technical support">Technical support</option>
+                            <option value="Billing & refunds">Billing &amp; refunds</option>
+                            <option value="Become an instructor">Become an instructor</option>
+                            <option value="Partnership">Partnership inquiry</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="lh-form-group">
+                        <label for="message">Message <span class="lh-req">*</span></label>
+                        <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help…"></textarea>
+                    </div>
+                    <button type="submit" class="lh-btn lh-btn-primary lh-btn-full">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Info -->
+            <div class="lh-contact-info">
+                <div class="lh-contact-info-card">
+                    <h3>Contact Information</h3>
+                    <div class="lh-info-item">
+                        <div class="lh-info-icon">📧</div>
+                        <div><strong>Email</strong><span>hello@learnhub.io</span></div>
+                    </div>
+                    <div class="lh-info-item">
+                        <div class="lh-info-icon">📞</div>
+                        <div><strong>Phone</strong><span>+1 (555) 234-5678</span></div>
+                    </div>
+                    <div class="lh-info-item">
+                        <div class="lh-info-icon">📍</div>
+                        <div><strong>Address</strong><span>123 Learning Lane<br>San Francisco, CA 94105</span></div>
+                    </div>
+                    <div class="lh-info-item">
+                        <div class="lh-info-icon">🕐</div>
+                        <div><strong>Support Hours</strong><span>Mon–Fri, 9am–6pm PST</span></div>
+                    </div>
+                </div>
+
+                <div class="lh-contact-info-card lh-faq-card">
+                    <h3>Quick Answers</h3>
+                    <details class="lh-faq-item">
+                        <summary>Do courses have an expiry date?</summary>
+                        <p>No — all courses come with lifetime access. Once you enroll, the content is yours forever.</p>
+                    </details>
+                    <details class="lh-faq-item">
+                        <summary>Can I get a refund?</summary>
+                        <p>Yes. We offer a 30-day money-back guarantee, no questions asked.</p>
+                    </details>
+                    <details class="lh-faq-item">
+                        <summary>Is there a free trial?</summary>
+                        <p>You can preview the first few lessons of every course before purchasing.</p>
+                    </details>
+                    <details class="lh-faq-item">
+                        <summary>How do I become an instructor?</summary>
+                        <p>Send us a message using the form with the "Become an instructor" topic and we'll be in touch.</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

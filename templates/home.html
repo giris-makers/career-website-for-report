@@ -1,0 +1,178 @@
+{% extends "base_learn.html" %}
+{% block title %}LearnHub – Learn Skills That Matter{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="lh-hero">
+    <div class="lh-hero-bg"></div>
+    <div class="lh-container lh-hero-content">
+        <div class="lh-hero-badge">🎓 Trusted by 50,000+ learners</div>
+        <h1 class="lh-hero-title">Learn Skills That<br><span class="lh-gradient-text">Open Doors</span></h1>
+        <p class="lh-hero-sub">Expert-led courses in web development, data science, design, and more. Start learning today — at your own pace, from anywhere.</p>
+        <div class="lh-hero-actions">
+            <a href="{{ url_for('services') }}" class="lh-btn lh-btn-primary lh-btn-lg">Explore Courses</a>
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('register') }}" class="lh-btn lh-btn-outline-white lh-btn-lg">Join Free</a>
+            {% else %}
+            <a href="{{ url_for('dashboard') }}" class="lh-btn lh-btn-outline-white lh-btn-lg">My Dashboard</a>
+            {% endif %}
+        </div>
+        <div class="lh-hero-stats">
+            <div class="lh-hstat"><strong>{{ total_courses }}+</strong><span>Courses</span></div>
+            <div class="lh-hstat-divider"></div>
+            <div class="lh-hstat"><strong>50K+</strong><span>Students</span></div>
+            <div class="lh-hstat-divider"></div>
+            <div class="lh-hstat"><strong>4.8★</strong><span>Avg Rating</span></div>
+            <div class="lh-hstat-divider"></div>
+            <div class="lh-hstat"><strong>Lifetime</strong><span>Access</span></div>
+        </div>
+    </div>
+    <div class="lh-hero-scroll">
+        <a href="#categories">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </a>
+    </div>
+</section>
+
+<!-- Categories -->
+<section class="lh-section" id="categories">
+    <div class="lh-container">
+        <div class="lh-section-header">
+            <div class="lh-section-tag">Browse by Topic</div>
+            <h2>Explore Categories</h2>
+            <p>Find the right course for where you are and where you want to go.</p>
+        </div>
+        <div class="lh-cats-grid">
+            {% for cat in categories %}
+            <a href="{{ url_for('services') }}?category={{ cat.name }}" class="lh-cat-card">
+                <span class="lh-cat-icon">{{ cat.icon }}</span>
+                <span class="lh-cat-name">{{ cat.name }}</span>
+                <span class="lh-cat-count">{{ cat.courses|length }} course{{ 's' if cat.courses|length != 1 }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Courses -->
+<section class="lh-section lh-section-gray">
+    <div class="lh-container">
+        <div class="lh-section-header">
+            <div class="lh-section-tag">Handpicked for You</div>
+            <h2>Featured Courses</h2>
+            <p>Our most popular courses, loved by thousands of students worldwide.</p>
+        </div>
+        <div class="lh-courses-grid">
+            {% for course in featured %}
+            <a href="{{ url_for('course_detail', slug=course.slug) }}" class="lh-course-card">
+                <div class="lh-course-thumb" style="background: linear-gradient(135deg, {{ course.color }}22 0%, {{ course.color }}44 100%); border-bottom: 3px solid {{ course.color }}">
+                    <span class="lh-course-icon">{{ course.icon }}</span>
+                    <span class="lh-course-level lh-level-{{ course.level.lower().replace(' ','-') }}">{{ course.level }}</span>
+                </div>
+                <div class="lh-course-body">
+                    <div class="lh-course-cat">{{ course.category_obj.name }}</div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description[:90] }}{% if course.description|length > 90 %}…{% endif %}</p>
+                    <div class="lh-course-meta">
+                        <span>⏱ {{ course.duration }}</span>
+                        <span>📚 {{ course.lessons }} lessons</span>
+                        <span>⭐ {{ course.rating }}</span>
+                    </div>
+                    <div class="lh-course-footer">
+                        <span class="lh-course-instructor">{{ course.instructor }}</span>
+                        <span class="lh-course-price">${{ "%.0f"|format(course.price) }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="lh-section-cta">
+            <a href="{{ url_for('services') }}" class="lh-btn lh-btn-primary">View All Courses →</a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="lh-section">
+    <div class="lh-container">
+        <div class="lh-section-header">
+            <div class="lh-section-tag">Simple Process</div>
+            <h2>How LearnHub Works</h2>
+            <p>From sign-up to certificate in three easy steps.</p>
+        </div>
+        <div class="lh-steps-grid">
+            <div class="lh-step">
+                <div class="lh-step-num">01</div>
+                <div class="lh-step-icon">🎯</div>
+                <h3>Choose Your Course</h3>
+                <p>Browse our library of 50+ expert-led courses across 6 categories and find the perfect match for your goals.</p>
+            </div>
+            <div class="lh-step-arrow">→</div>
+            <div class="lh-step">
+                <div class="lh-step-num">02</div>
+                <div class="lh-step-icon">📖</div>
+                <h3>Learn at Your Pace</h3>
+                <p>Watch lessons anytime, take quizzes, and work on real projects. Lifetime access means you never feel rushed.</p>
+            </div>
+            <div class="lh-step-arrow">→</div>
+            <div class="lh-step">
+                <div class="lh-step-num">03</div>
+                <div class="lh-step-icon">🏆</div>
+                <h3>Earn Your Certificate</h3>
+                <p>Complete the course and receive a shareable certificate to showcase on LinkedIn or your resume.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="lh-section lh-section-dark">
+    <div class="lh-container">
+        <div class="lh-section-header lh-header-light">
+            <div class="lh-section-tag lh-tag-light">Student Stories</div>
+            <h2>What Our Students Say</h2>
+        </div>
+        <div class="lh-testimonials-grid">
+            <div class="lh-testimonial">
+                <div class="lh-testi-stars">★★★★★</div>
+                <p>"LearnHub's Full-Stack Bootcamp completely changed my career. I went from zero coding knowledge to landing a junior dev job in 6 months."</p>
+                <div class="lh-testi-author">
+                    <div class="lh-testi-avatar" style="background:#2563eb">JR</div>
+                    <div><strong>Jordan Reid</strong><span>Junior Developer @ Startup</span></div>
+                </div>
+            </div>
+            <div class="lh-testimonial">
+                <div class="lh-testi-stars">★★★★★</div>
+                <p>"The Data Science course is incredibly practical. I could apply what I learned to my job immediately. The instructor explains everything clearly."</p>
+                <div class="lh-testi-author">
+                    <div class="lh-testi-avatar" style="background:#7c3aed">AM</div>
+                    <div><strong>Aisha Mensah</strong><span>Data Analyst @ Finance Co.</span></div>
+                </div>
+            </div>
+            <div class="lh-testimonial">
+                <div class="lh-testi-stars">★★★★★</div>
+                <p>"Best investment I've made. The UI/UX course gave me the confidence to freelance. I've already made back 10x the course fee."</p>
+                <div class="lh-testi-author">
+                    <div class="lh-testi-avatar" style="background:#db2777">SC</div>
+                    <div><strong>Sam Chen</strong><span>Freelance Designer</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="lh-cta-banner">
+    <div class="lh-container">
+        <div class="lh-cta-content">
+            <h2>Ready to Start Learning?</h2>
+            <p>Join 50,000+ students and invest in your future today.</p>
+            <div class="lh-cta-actions">
+                <a href="{{ url_for('register') }}" class="lh-btn lh-btn-primary lh-btn-lg">Create Free Account</a>
+                <a href="{{ url_for('services') }}" class="lh-btn lh-btn-ghost-white lh-btn-lg">Browse Courses</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base_learn.html" %}
+{% block title %}{{ course.title }} – LearnHub{% endblock %}
+
+{% block content %}
+<div class="lh-container lh-detail-wrap">
+    <a href="{{ url_for('services') }}" class="lh-back-link">← Back to courses</a>
+
+    <div class="lh-detail-layout">
+        <div class="lh-detail-main">
+            <div class="lh-detail-thumb" style="background: linear-gradient(135deg, {{ course.color }}22 0%, {{ course.color }}55 100%); border: 2px solid {{ course.color }}44">
+                <span style="font-size:4rem">{{ course.icon }}</span>
+            </div>
+
+            <div class="lh-detail-header">
+                <div class="lh-detail-meta-top">
+                    <span class="lh-course-cat">{{ course.category_obj.name }}</span>
+                    <span class="lh-course-level lh-level-{{ course.level.lower().replace(' ','-') }}">{{ course.level }}</span>
+                </div>
+                <h1>{{ course.title }}</h1>
+                <p class="lh-detail-desc">{{ course.long_desc or course.description }}</p>
+            </div>
+
+            <div class="lh-detail-section">
+                <h2>What You'll Learn</h2>
+                <div class="lh-learn-grid">
+                    <div class="lh-learn-item">✓ Build real-world projects from scratch</div>
+                    <div class="lh-learn-item">✓ Industry best practices and modern tools</div>
+                    <div class="lh-learn-item">✓ Problem-solving and debugging skills</div>
+                    <div class="lh-learn-item">✓ Shareable portfolio projects</div>
+                    <div class="lh-learn-item">✓ Certificate of completion</div>
+                    <div class="lh-learn-item">✓ Lifetime access to all content</div>
+                </div>
+            </div>
+
+            <div class="lh-detail-section">
+                <h2>About the Instructor</h2>
+                <div class="lh-instructor-card">
+                    <div class="lh-instructor-avatar" style="background:{{ course.color }}">
+                        {{ course.instructor[:2].upper() }}
+                    </div>
+                    <div>
+                        <strong>{{ course.instructor }}</strong>
+                        <p>{{ course.instructor_bio or 'Expert instructor with years of industry experience.' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if related %}
+            <div class="lh-detail-section">
+                <h2>Related Courses</h2>
+                <div class="lh-related-grid">
+                    {% for r in related %}
+                    <a href="{{ url_for('course_detail', slug=r.slug) }}" class="lh-related-card">
+                        <span style="font-size:1.5rem">{{ r.icon }}</span>
+                        <div>
+                            <strong>{{ r.title }}</strong>
+                            <span>{{ r.level }} · {{ r.duration }}</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="lh-detail-sidebar">
+            <div class="lh-sidebar-card lh-sidebar-sticky">
+                <div class="lh-sidebar-price">${{ "%.2f"|format(course.price) }}</div>
+                {% if enrolled %}
+                <div class="lh-enrolled-badge">✓ You're enrolled!</div>
+                <a href="{{ url_for('dashboard') }}" class="lh-btn lh-btn-primary lh-btn-full">Go to Dashboard</a>
+                {% elif current_user.is_authenticated %}
+                <form method="post" action="{{ url_for('enroll', course_id=course.id) }}">
+                    <button type="submit" class="lh-btn lh-btn-primary lh-btn-full">Enroll Now</button>
+                </form>
+                {% else %}
+                <a href="{{ url_for('register') }}" class="lh-btn lh-btn-primary lh-btn-full">Sign Up to Enroll</a>
+                <a href="{{ url_for('login') }}" class="lh-btn lh-btn-ghost lh-btn-full" style="margin-top:8px">Already have an account?</a>
+                {% endif %}
+                <p class="lh-sidebar-guarantee">30-day money-back guarantee</p>
+
+                <ul class="lh-sidebar-details">
+                    <li><span>⏱</span><span>{{ course.duration }} total</span></li>
+                    <li><span>📚</span><span>{{ course.lessons }} lessons</span></li>
+                    <li><span>📶</span><span>{{ course.level }}</span></li>
+                    <li><span>⭐</span><span>{{ course.rating }} / 5.0 rating</span></li>
+                    <li><span>🎓</span><span>{{ course.enrolled_count }} students</span></li>
+                    <li><span>♾️</span><span>Lifetime access</span></li>
+                    <li><span>📜</span><span>Certificate included</span></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

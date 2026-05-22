@@ -1,70 +1,121 @@
-{% extends "base.html" %}
-{% block title %}About Us – Nexus Careers{% endblock %}
+{% extends "base_learn.html" %}
+{% block title %}About Us – LearnHub{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="container">
-        <h1>About Nexus</h1>
-        <p class="hero-sub">We're on a mission to connect people with opportunities that matter.</p>
+<section class="lh-page-hero">
+    <div class="lh-container">
+        <h1>About LearnHub</h1>
+        <p>On a mission to make world-class education accessible to everyone, everywhere.</p>
     </div>
 </section>
 
-<section class="about-section container">
-    <div class="about-grid">
-        <div class="about-block">
-            <h2>Our Mission</h2>
-            <p>At Nexus, we believe the right career opportunity can change everything. We build tools that help people find meaningful work and help companies find outstanding talent. Every day, we work to make that connection faster, fairer, and more human.</p>
-        </div>
-
-        <div class="about-block">
-            <h2>Our Culture</h2>
-            <p>We are a team of curious, driven people who care deeply about our work and each other. We move fast, but never sacrifice quality. We disagree openly and decide together. We celebrate wins and learn from setbacks. Above all, we treat everyone — teammates, customers, and candidates — with respect.</p>
-        </div>
-
-        <div class="about-block">
-            <h2>Benefits & Perks</h2>
-            <ul class="perks-list">
-                <li>Competitive salary and equity</li>
-                <li>Comprehensive health, dental, and vision coverage</li>
-                <li>Flexible remote and hybrid work options</li>
-                <li>Generous PTO and company-wide recharge days</li>
-                <li>$2,000 annual learning & development budget</li>
-                <li>Home office stipend</li>
-                <li>401(k) with company match</li>
-                <li>Parental leave for all caregivers</li>
-            </ul>
-        </div>
-
-        <div class="about-block">
-            <h2>Our Values</h2>
-            <div class="values-grid">
-                <div class="value-item">
-                    <span class="value-icon">🚀</span>
-                    <h3>Move with purpose</h3>
-                    <p>Speed matters, but direction matters more.</p>
-                </div>
-                <div class="value-item">
-                    <span class="value-icon">🤝</span>
-                    <h3>Trust each other</h3>
-                    <p>We assume good intent and act with integrity.</p>
-                </div>
-                <div class="value-item">
-                    <span class="value-icon">💡</span>
-                    <h3>Stay curious</h3>
-                    <p>The best ideas come from asking why.</p>
-                </div>
-                <div class="value-item">
-                    <span class="value-icon">🌍</span>
-                    <h3>Build for everyone</h3>
-                    <p>Diverse teams build better products.</p>
-                </div>
+<section class="lh-section">
+    <div class="lh-container">
+        <div class="lh-about-intro">
+            <div>
+                <div class="lh-section-tag">Our Story</div>
+                <h2>Built by Learners, for Learners</h2>
+                <p>LearnHub was founded in 2020 by a group of engineers and educators who were frustrated with the gap between traditional education and the skills the modern world actually needs. We set out to build a platform where world-class instructors could reach anyone with an internet connection.</p>
+                <p style="margin-top:14px">Today, we serve 50,000+ students across 120+ countries with courses that are project-based, up-to-date, and taught by practitioners — not just academics.</p>
+                <a href="{{ url_for('services') }}" class="lh-btn lh-btn-primary" style="margin-top:24px">Explore Our Courses</a>
+            </div>
+            <div class="lh-about-stats">
+                <div class="lh-astat"><span>50K+</span><p>Active Students</p></div>
+                <div class="lh-astat"><span>120+</span><p>Countries</p></div>
+                <div class="lh-astat"><span>50+</span><p>Expert Courses</p></div>
+                <div class="lh-astat"><span>4.8★</span><p>Avg Rating</p></div>
             </div>
         </div>
     </div>
+</section>
 
-    <div class="about-cta">
-        <h2>Ready to find your next role?</h2>
-        <a href="{{ url_for('index') }}" class="btn btn-primary">View Open Roles</a>
+<section class="lh-section lh-section-gray">
+    <div class="lh-container">
+        <div class="lh-section-header">
+            <div class="lh-section-tag">Why Us</div>
+            <h2>The LearnHub Difference</h2>
+        </div>
+        <div class="lh-diff-grid">
+            <div class="lh-diff-card">
+                <div class="lh-diff-icon">🎯</div>
+                <h3>Project-Based Learning</h3>
+                <p>Every course is built around real projects. You don't just watch — you build, and you leave with a portfolio that proves your skills to employers.</p>
+            </div>
+            <div class="lh-diff-card">
+                <div class="lh-diff-icon">👩‍💻</div>
+                <h3>Industry Practitioners</h3>
+                <p>Our instructors aren't just academics. They're engineers at Google, designers at Figma, data scientists at top firms — people who do this work every day.</p>
+            </div>
+            <div class="lh-diff-card">
+                <div class="lh-diff-icon">🔄</div>
+                <h3>Always Up to Date</h3>
+                <p>Tech moves fast. Our courses are updated quarterly to reflect the latest tools, frameworks, and best practices — so what you learn is always relevant.</p>
+            </div>
+            <div class="lh-diff-card">
+                <div class="lh-diff-icon">♾️</div>
+                <h3>Learn Forever</h3>
+                <p>Once you enroll, the course is yours forever. Learn at 2am or 2pm, re-watch any lesson, and access new content added to the course over time.</p>
+            </div>
+            <div class="lh-diff-card">
+                <div class="lh-diff-icon">🏆</div>
+                <h3>Certificates That Matter</h3>
+                <p>Our certificates are recognized by hundreds of employers. Share them on LinkedIn or your portfolio to stand out when applying for jobs.</p>
+            </div>
+            <div class="lh-diff-card">
+                <div class="lh-diff-icon">💬</div>
+                <h3>Community Support</h3>
+                <p>Every course includes access to a community of fellow learners and TAs who help you get unstuck and keep you motivated to finish.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="lh-section">
+    <div class="lh-container">
+        <div class="lh-section-header">
+            <div class="lh-section-tag">The Team</div>
+            <h2>Meet Our Instructors</h2>
+            <p>Real practitioners with real experience, passionate about teaching.</p>
+        </div>
+        <div class="lh-team-grid">
+            <div class="lh-team-card">
+                <div class="lh-team-avatar" style="background:#2563eb">SC</div>
+                <h3>Sarah Chen</h3>
+                <p class="lh-team-role">Full-Stack Development</p>
+                <p>Senior engineer at Google with 10 years of experience building web products at scale.</p>
+            </div>
+            <div class="lh-team-card">
+                <div class="lh-team-avatar" style="background:#7c3aed">JP</div>
+                <h3>Dr. James Park</h3>
+                <p class="lh-team-role">Data Science</p>
+                <p>PhD in Statistics, formerly at Netflix Data Science team. Specializes in making stats approachable.</p>
+            </div>
+            <div class="lh-team-card">
+                <div class="lh-team-avatar" style="background:#db2777">MP</div>
+                <h3>Maya Patel</h3>
+                <p class="lh-team-role">UI/UX Design</p>
+                <p>Lead designer at Figma. Designed products used by millions. Passionate about inclusive design.</p>
+            </div>
+            <div class="lh-team-card">
+                <div class="lh-team-avatar" style="background:#059669">AK</div>
+                <h3>Prof. Alex Kim</h3>
+                <p class="lh-team-role">Machine Learning</p>
+                <p>University professor and AI researcher with 50+ published papers and consulting for Fortune 500 companies.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="lh-cta-banner">
+    <div class="lh-container">
+        <div class="lh-cta-content">
+            <h2>Join Our Community of Learners</h2>
+            <p>Start your journey today — your first course is just a click away.</p>
+            <div class="lh-cta-actions">
+                <a href="{{ url_for('register') }}" class="lh-btn lh-btn-primary lh-btn-lg">Get Started Free</a>
+                <a href="{{ url_for('contact') }}" class="lh-btn lh-btn-ghost-white lh-btn-lg">Talk to Us</a>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}
